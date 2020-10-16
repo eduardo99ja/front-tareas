@@ -1,4 +1,4 @@
-import React, { useState,useContext, useEffect } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { Link } from "react-router-dom";
 import AlertaContext from "../../context/alertas/alertaContext";
 import AuthContext from "../../context/autenticacion/authContext";
@@ -6,29 +6,29 @@ const NuevaCuenta = (props) => {
   //Extraer los valores del context
 
   const alertaContext = useContext(AlertaContext);
-  const {alerta, mostrarAlerta} = alertaContext;
+  const { alerta, mostrarAlerta } = alertaContext;
 
   const authContext = useContext(AuthContext);
-  const {mensaje,autenticado,registrarUsuario} = authContext; 
+  const { mensaje, autenticado, registrarUsuario } = authContext;
 
   //En caso de que el usuarios e haya autenticado o sea regitro duplicado
 
-  useEffect(()=>{
-    if(autenticado){
+  useEffect(() => {
+    if (autenticado) {
       props.history.push("/proyectos");
     }
-    if(mensaje){
-      mostrarAlerta(mensaje.msg,mensaje.categoria);
+    if (mensaje) {
+      mostrarAlerta(mensaje.msg, mensaje.categoria);
     }
-
-  },[mensaje,autenticado,props.history]);
+    // eslint-disable-next-line
+  }, [mensaje, autenticado, props.history]);
   //state para iniciar sesion
 
   const [usuario, guardarUsuario] = useState({
-    nombre:"",
+    nombre: "",
     email: "",
     password: "",
-    confirmar: ""
+    confirmar: "",
   });
 
   //extraer de usuario
@@ -49,21 +49,29 @@ const NuevaCuenta = (props) => {
 
     //Validar que no haya campos vacions
 
-    if(nombre.trim() == "" || email.trim() == "" || password.trim() == "" || confirmar.trim() == ""  ){
-      mostrarAlerta("Todos los campos son obligatorios","alerta-error");
+    if (
+      nombre.trim() === "" ||
+      email.trim() === "" ||
+      password.trim() === "" ||
+      confirmar.trim() === ""
+    ) {
+      mostrarAlerta("Todos los campos son obligatorios", "alerta-error");
       return;
     }
 
     //passwors minimo 6 carcateres
 
-    if(password.length<6){
-      mostrarAlerta("El password debe de ser al menos 6 caracteres","alerta-error");
+    if (password.length < 6) {
+      mostrarAlerta(
+        "El password debe de ser al menos 6 caracteres",
+        "alerta-error"
+      );
       return;
     }
 
     //los dos passwords son iguales
-    if(password !== confirmar){
-      mostrarAlerta("Las contraseñas no coinciden","alerta-error");
+    if (password !== confirmar) {
+      mostrarAlerta("Las contraseñas no coinciden", "alerta-error");
       return;
     }
 
@@ -72,12 +80,14 @@ const NuevaCuenta = (props) => {
     registrarUsuario({
       nombre,
       email,
-      password
+      password,
     });
   };
   return (
     <div className="form-usuario">
-      {alerta ? (<div className={`alerta ${alerta.categoria}`}>{alerta.msg}</div>) : null}
+      {alerta ? (
+        <div className={`alerta ${alerta.categoria}`}>{alerta.msg}</div>
+      ) : null}
       <div className="contenedor-form sombra-dark">
         <h1>Obtener una cuenta</h1>
         <form onSubmit={onSubmit}>
@@ -135,7 +145,7 @@ const NuevaCuenta = (props) => {
           </div>
         </form>
         <Link to={"/"} className="enlace-cuenta">
-          Volver  a iniciar sesion
+          Volver a iniciar sesion
         </Link>
       </div>
     </div>
